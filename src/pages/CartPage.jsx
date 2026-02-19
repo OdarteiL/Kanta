@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { removeFromCart, updateQuantity, clearCart } from "../redux/cartSlice";
 import { IoTrashOutline } from "react-icons/io5";
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart?.items || []);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -102,7 +103,10 @@ const CartPage = () => {
                   <span>&#8373;{total.toFixed(2)}</span>
                 </div>
               </div>
-              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-3">
+              <button 
+                onClick={() => navigate("/checkout")}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-3"
+              >
                 Proceed to Checkout
               </button>
               <button

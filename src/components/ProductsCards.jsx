@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
+import { addToCart } from "../redux/cartSlice";
+import toast, { Toaster } from "react-hot-toast";
+import { FaShoppingCart } from "react-icons/fa";
 
 const ProductsCards = () => {
+  const dispatch = useDispatch();
   const searchQuery = useSelector((state) => state.search.query);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +29,13 @@ const ProductsCards = () => {
     product.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleAddToCart = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(addToCart(product));
+    toast.success(`${product.title.substring(0, 20)}... added to cart!`);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -35,6 +46,7 @@ const ProductsCards = () => {
 
   return (
     <div className="bg-gray-50">
+      <Toaster position="top-right" />
       <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredProducts.map((product, index) => (
@@ -53,7 +65,7 @@ const ProductsCards = () => {
                     className="h-full w-full object-contain object-center p-4 group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
-                <div className="p-4">
+                <div className="p-4 pb-16">
                   <div className="mb-2">
                     <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
                       {product.category}
@@ -74,8 +86,18 @@ const ProductsCards = () => {
                     </div>
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
               </Link>
+              
+              {/* Add to Cart Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => handleAddToCart(e, product)}
+                className="absolute bottom-4 left-4 right-4 bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+              >
+                <FaShoppingCart />
+                Add to Cart
+              </motion.button>
             </motion.div>
           ))}
         </div>

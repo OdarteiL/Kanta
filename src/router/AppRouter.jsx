@@ -15,6 +15,7 @@ import BrandPage from "../pages/BrandPage";
 import MenPage from "../pages/MenPage";
 import WomenPage from "../pages/WomenPage";
 import KidsPage from "../pages/KidsPage";
+import CheckoutPage from "../pages/CheckoutPage";
 
 const AppRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const AppRouter = createBrowserRouter(
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/new-arrivals" element={<NewArrivalsPage />} />
         <Route path="/brands" element={<BrandPage />} />
         <Route path="/men" element={<MenPage />} />
