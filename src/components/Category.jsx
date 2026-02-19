@@ -15,15 +15,15 @@ const Category = () => {
   const categories = [
     { name: "MEN", img: "https://res.cloudinary.com/dlcqoiyb1/image/upload/v1707085439/ecommerce/pair-brown-shoes-with-black-leather-sole-word-bottom_lhrghr.jpg", path: "/men" },
     { name: "WOMEN", img: "https://res.cloudinary.com/dlcqoiyb1/image/upload/v1707085578/ecommerce/portrait-woman-s-legs-with-stylish-high-heels-pantyhose_huvmqc.jpg", path: "/women" },
-    { name: "KIDS", img: "https://res.cloudinary.com/dlcqoiyb1/image/upload/v1707087390/ecommerce/kids_shoe_s2lx97.jpg", path: "/kids" },
-    { name: "ACCESSORIES", img: "https://res.cloudinary.com/dlcqoiyb1/image/upload/v1707085439/ecommerce/pair-brown-shoes-with-black-leather-sole-word-bottom_lhrghr.jpg", path: "/products" },
+    { name: "ELECTRONICS", img: "https://res.cloudinary.com/dlcqoiyb1/image/upload/v1707087390/ecommerce/kids_shoe_s2lx97.jpg", path: "/products" },
+    { name: "JEWELRY", img: "https://res.cloudinary.com/dlcqoiyb1/image/upload/v1707085439/ecommerce/pair-brown-shoes-with-black-leather-sole-word-bottom_lhrghr.jpg", path: "/products" },
   ];
 
   const brands = [brand1, brand5, brand2, brand6, brand3, brand4];
   const localShoes = [
-    { name: "SHOP LOCAL MADE", img: shoe },
-    { name: "KENTEY SNEAKER", img: shoe1 },
-    { name: "KUMASI MADE", img: shoe2 },
+    { name: "FASHION COLLECTION", img: shoe },
+    { name: "ELECTRONICS", img: shoe1 },
+    { name: "ACCESSORIES", img: shoe2 },
   ];
 
   return (
@@ -49,24 +49,41 @@ const Category = () => {
 
       <div className="my-16">
         <h2 className="font-bold text-4xl mb-8 text-center">Shop By Brands</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
-          {brands.map((brand, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.1 }}
-              className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all"
-            >
-              <Link to="/brands">
-                <img src={brand} alt="brand logo" className="w-full h-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </Link>
-            </motion.div>
-          ))}
+        <div className="relative overflow-hidden py-8 bg-gray-50 rounded-xl">
+          {/* Animated Brand Slider */}
+          <motion.div
+            className="flex gap-12 items-center"
+            animate={{
+              x: [0, -1200],
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 20,
+                ease: "linear",
+              },
+            }}
+          >
+            {/* Duplicate brands for seamless loop */}
+            {[...brands, ...brands].map((brand, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.1, y: -5 }}
+                className="flex-shrink-0 bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all w-32 h-32 flex items-center justify-center"
+              >
+                <Link to="/brands">
+                  <img src={brand} alt="brand logo" className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all" />
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
       <div className="my-16">
-        <h2 className="font-bold text-4xl mb-8 text-center">Made in Ghana</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <h2 className="font-bold text-4xl mb-8 text-center">Featured Collections</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {localShoes.map((shoe, index) => (
             <motion.div
               key={shoe.name}
@@ -76,13 +93,18 @@ const Category = () => {
               whileHover={{ y: -10 }}
               className="group"
             >
-              <Link>
-                <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-                  <div className="h-[350px] overflow-hidden">
-                    <img src={shoe.img} alt={shoe.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  </div>
-                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 text-center">
-                    <p className="text-white font-bold text-xl">{shoe.name}</p>
+              <Link to="/products">
+                <div className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all h-64">
+                  <img src={shoe.img} alt={shoe.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <p className="text-white font-bold text-2xl mb-2">{shoe.name}</p>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      className="bg-white text-black px-6 py-2 rounded-full font-semibold text-sm hover:bg-blue-600 hover:text-white transition-colors"
+                    >
+                      Explore
+                    </motion.button>
                   </div>
                 </div>
               </Link>

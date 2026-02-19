@@ -11,7 +11,7 @@ const Footer = () => {
               <img src={logo} alt="kanta logo" className="w-32" />
             </Link>
             <p className="text-sm leading-relaxed">
-              An authentic Ghanaian e-commerce store providing nothing but the best. High quality shoes, both made in Ghana and foreign brands.
+              An authentic Ghanaian e-commerce store providing nothing but the best. High quality fashion and electronics, both made in Ghana and international brands.
             </p>
           </div>
 

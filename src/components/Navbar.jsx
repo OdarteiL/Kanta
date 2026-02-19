@@ -34,7 +34,7 @@ const Navbar = () => {
             <form className="relative w-full">
               <input
                 type="text"
-                placeholder="Search for shoes..."
+                placeholder="Search for fashion & electronics..."
                 className="w-full h-[40px] px-4 pr-12 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 onChange={handleSearch}
               />

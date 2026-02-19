@@ -5,10 +5,12 @@ import { motion } from "framer-motion";
 import { addToCart } from "../redux/cartSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { FaShoppingCart } from "react-icons/fa";
+import Pagination from "./Pagination";
 
 const ProductsCards = () => {
   const dispatch = useDispatch();
   const searchQuery = useSelector((state) => state.search.query);
+  const { category, priceRange, sortBy, currentPage, itemsPerPage } = useSelector((state) => state.filter);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,9 +27,46 @@ const ProductsCards = () => {
       });
   }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Apply filters
+  let filteredProducts = products.filter((product) => {
+    // Search filter
+    if (searchQuery && !product.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    
+    // Category filter
+    if (category && product.category !== category) {
+      return false;
+    }
+    
+    // Price range filter
+    if (product.price < priceRange[0] || product.price > priceRange[1]) {
+      return false;
+    }
+    
+    return true;
+  });
+
+  // Apply sorting
+  filteredProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortBy) {
+      case "price_asc":
+        return a.price - b.price;
+      case "price_desc":
+        return b.price - a.price;
+      case "rating":
+        return (b.rating?.rate || 0) - (a.rating?.rate || 0);
+      case "newest":
+      default:
+        return b.id - a.id;
+    }
+  });
+
+  // Pagination
+  const totalItems = filteredProducts.length;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   const handleAddToCart = (e, product) => {
     e.preventDefault();
@@ -48,8 +87,17 @@ const ProductsCards = () => {
     <div className="bg-gray-50">
       <Toaster position="top-right" />
       <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
+        {/* Results Count */}
+        <div className="mb-6">
+          <p className="text-gray-600">
+            Showing <span className="font-semibold">{startIndex + 1}</span> -{" "}
+            <span className="font-semibold">{Math.min(endIndex, totalItems)}</span> of{" "}
+            <span className="font-semibold">{totalItems}</span> products
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredProducts.map((product, index) => (
+          {paginatedProducts.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -101,12 +149,16 @@ const ProductsCards = () => {
             </motion.div>
           ))}
         </div>
+
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No products found matching your search.</p>
+            <p className="text-gray-500 text-lg">No products found matching your filters.</p>
           </div>
         )}
       </div>
+
+      {/* Pagination at Bottom */}
+      {totalItems > 0 && <Pagination totalItems={totalItems} />}
     </div>
   );
 };

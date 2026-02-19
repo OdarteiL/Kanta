@@ -18,10 +18,10 @@ const HeroSection = () => {
           className="absolute inset-0 z-20 flex flex-col justify-center items-start px-[5%] md:px-[10%]"
         >
           <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold mb-4 drop-shadow-lg">
-            Step Into Style
+            Fashion & Electronics
           </h1>
           <p className="text-white text-lg md:text-xl mb-8 max-w-xl drop-shadow-md">
-            Discover the latest collection of premium footwear
+            Discover the latest trends in fashion and cutting-edge electronics
           </p>
           <Link to="/products">
             <motion.button
@@ -29,7 +29,7 @@ const HeroSection = () => {
               whileTap={{ scale: 0.95 }}
               className="bg-blue-600 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-700 transition-colors shadow-xl"
             >
-              SHOP THE LATEST RELEASE NOW!
+              SHOP NOW
             </motion.button>
           </Link>
         </motion.div>
